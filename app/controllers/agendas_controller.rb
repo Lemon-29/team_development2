@@ -25,6 +25,7 @@ class AgendasController < ApplicationController
     @agenda = Agenda.find(params[:id])
     if @agenda.user_id == current_user.id || @agenda.team.owner_id == current_user.id
       @agenda.destroy
+      AgendaMailer.deleted_notify(@agenda.title, @agenda.team.members).deliver
       redirect_to dashboard_url, notice:"投稿を削除しました！"
     else
       redirect_to dashboard_url, notice:"投稿を削除できません！"
