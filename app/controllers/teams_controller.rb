@@ -62,7 +62,6 @@ class TeamsController < ApplicationController
     @team = Team.friendly.find(params[:id])
   end
 
-  
   def team_params
     params.fetch(:team, {}).permit %i[name icon icon_cache owner_id keep_team_id]
   end
