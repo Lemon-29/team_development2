@@ -47,12 +47,22 @@ class TeamsController < ApplicationController
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
   end
 
+  def change_owner
+    @team = Team.find(params[:team_id])
+    new_owner = User.find(params[:user_id])
+    if @team.members.include?(new_owner)
+      @team.change_owner(current_user, new_owner)
+    end
+    redirect_to team_path(@team.id)
+  end
+
   private
 
   def set_team
     @team = Team.friendly.find(params[:id])
   end
 
+  
   def team_params
     params.fetch(:team, {}).permit %i[name icon icon_cache owner_id keep_team_id]
   end
